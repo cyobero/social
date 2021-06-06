@@ -1,8 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .forms import UserLoginForm
+from django.shortcuts import render
+from .forms import UserLoginForm, UserProfileCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib import messages
 
 # Create your views here.
@@ -38,3 +37,15 @@ def user_logout(request):
 def dashboard(request):
     user = request.user
     return render(request, 'account/dashboard.html', {'user': user})
+
+
+def user_register(request):
+    if request.method == 'POST':
+        form = UserProfileCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return render(request, 'account/register_success.html')
+    else:
+        form = UserProfileCreationForm()
+    return render(request, 'account/register.html', {'form': form})
