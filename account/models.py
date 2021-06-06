@@ -9,7 +9,7 @@ class UserProfile(User):
         ('O', 'Other')
     )
 
-    profile_pic = models.ImageField(upload_to='profile_pics', blank=True, null=True)
+    profile_pic = models.ImageField(upload_to='/profile_pics', blank=True, null=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
 
     def __str__(self):

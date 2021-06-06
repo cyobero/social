@@ -12,6 +12,11 @@ class UserLoginForm(forms.Form):
 
 
 class UserProfileCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserProfileCreationForm, self).__init__(*args, **kwargs)
+        for fieldname in self.fields:
+            self.fields[fieldname].widget.attrs.update({'class': 'form-control'})
+
     email = forms.EmailField()
 
     class Meta:
