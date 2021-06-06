@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}social{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<!-- Login form -->
+			<form method="post">
+					{{form.as_p}}
+					{% csrf_token %}
+					<input type="submit" value="Log in">
+				</div>
+			</form>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	{% if messages %}
+	{% for message in messages %}
+	<p>{{message}}</p>
+	{% endfor %}
+	{% endif %}
+</div>
+{% endblock %}
