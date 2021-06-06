@@ -1,6 +1,8 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, get_object_or_404
 from .forms import UserLoginForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 
 # Create your views here.
@@ -26,6 +28,13 @@ def user_login(request):
     return render(request, 'account/login.html', {'form': form})
 
 
+@login_required
 def user_logout(request):
     logout(request)
     return render(request, 'account/logged_out.html')
+
+
+@login_required(login_url='user_login')
+def dashboard(request):
+    user = request.user
+    return render(request, 'account/dashboard.html', {'user': user})
