@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from django_countries.fields import CountryField
 from localflavor.us.models import USStateField, USZipCodeField
+from blurb.models import Blurb
 # Create your models here.
 class UserProfile(User):
     GENDER_CHOICES = (
@@ -20,6 +21,9 @@ class UserProfile(User):
 
     def get_absolute_url(self):
         return self.profile_pic.url
+
+    def get_blurbs(self):
+        return Blurb.objects.filter(author=self)
 
     def __str__(self):
         return self.username

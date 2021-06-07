@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 {% if user_profile %}
 {{user_profile.username}}'s profile
 {% endif %}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 {% endblock %}
 
 {% block navbar %}
@@ -13,12 +18,6 @@
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item">
 				<a class="nav-link active" aria-current="page" href="#">Home</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Features</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Pricing</a>
 			</li>
 		</ul>
 	</div>
@@ -35,50 +34,51 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-	<div class="row">
-
+<div class="container" align="left">
+	<div class="row" style="margin-top:2em;">
 		<!-- Left side of profile page -->
-		<div class="col-md-8">
+
+		<div class="col-md-5 col-lg-6">
 			<!-- User Profile -->
-			<div class="container">
-				<div class="row">
-					<!-- Profile picture -->
-					<div class="col">
-						<h3>{{user_profile.username}}'s profile</h3>
-						{% if user_profile.profile_pic %}
-						<img src="{{user_profile.get_absolute_url}}"
-							 style=width:400px;height:280px />
-						{% endif %}
+			<div class="card" style="width: 100%;">
+				<div class="card-header">@{{user_profile.username}}</div>
+				<div class="row no-gutters">
+					<div class="col-sm-5">
+						<img class="card-img" src="{{user_profile.get_absolute_url}}" alt="Suresh Dasari Card">
 					</div>
-					<!-- Information -->
-					<div class="col">
-						<br><br>
-						<p>First name: {{user_profile.first_name}}</p>
-						<p>Last name: {{user_profile.last_name}}</p>
-						<p>Gender: {{user_profile.gender}}</p>
-						<p>City: {{user_profile.city}}</p>
-						<p>State: {{user_profile.state}}</p>
-						<p>Country: {{user_profile.country}}</p>
+					<div class="col-sm-7">
+						<div class="card-body">
+							<h5 class="card-title">{{user_profile.first_name}}
+								{{user_profile.last_name}}</h5>
+							<p>From: {{user_profile.city}}, {{user_profile.state}},
+							{{user_profile.country}}</p>
+							<small>Date joined: {{user_profile.date_joined}}</small>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<br/>
-			<!-- Contact information -->
-			<div class="container">
-				<div class="row">
-					<h4>contact {{user_profile.username}}</h4>
-				</div>
-			</div>
 
-		</div>
+			</div>
+		</div> <!-- .col-md-5 .col-lg-6 -->
 
 		<!-- Right side of profile page -->
-		<div class="col-md-4">
-			<h3>{{user_profile.username}}'s blurbs</h3>
+		<div class="col-md-6">
+
 			<!-- Blurbs -->
+			<div class="container">
+				<div class="row">
+					<h2>{{user_profile.username}}'s blurbs</h2>
+					<h4>{{blurbs.0.title}}</h4>
+					<small>posted on {{blurbs.0.edited}}</small>
+					<p>{{blurbs.0.body}}</p>
+				</div>
+				<div cass="row">
+					<h4>More recent blurbs...</h4>
+					<p class="lead">
+					<a href="#">
+						{{blurbs.1.title}}</a></p>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-{% endblock %}
+	{% endblock %}

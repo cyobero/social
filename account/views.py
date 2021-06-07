@@ -1,11 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .forms import UserLoginForm, UserProfileCreationForm
+from blurb.models import Blurb
 from .models import UserProfile
 # Create your views here.
+
+
 def user_login(request):
     if request.method == "POST":
         form = UserLoginForm(request.POST)
@@ -44,14 +47,19 @@ def user_register(request):
     if request.method == 'POST':
         form = UserProfileCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password2']
+            user = authenticate(username=username, password=password)
             login(request, user)
             return render(request, 'account/register_success.html')
     else:
         form = UserProfileCreationForm()
     return render(request, 'account/register.html', {'form': form})
 
-@login_required
+
 def user_profile(request, username):
     user_profile = get_object_or_404(UserProfile, username=username)
-    return render(request, 'account/profile.html', {'user_profile': user_profile})
+    blurbs = Blurb.objects.filter(author__username=username)
+    return render(request, 'account/profile.html', {'user_profile': user_profile,
+                                                    'blurbs': blurbs})

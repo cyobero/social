@@ -24,4 +24,3 @@ A social media site a la MySpace.
 	- gender
 
 ## Blurb
-

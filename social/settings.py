@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
     'django_countries',
+    'blurb.apps.BlurbConfig',
 ]
 
 MIDDLEWARE = [
