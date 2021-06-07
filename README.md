@@ -2,5 +2,20 @@
 A social media site a la MySpace. 
 
 ## To-Do
---------------
-- add user profile form
+==================================================================
+
+### Features
+- Users can add/change their profile pictures so others know who they are. (2.5/5) 
+	- Create template for profile pic.
+- Users can add friends to their friends list so they can see each other's content. (3.5/5)
+- Users can create and edit their profile page so they can share information and content with others. (3.5/5)
+-
+
+## User Profile
+==================================================================
+Fields (all fields in addition to django's `User` model are optional):
+	- profile picture
+	- first name
+	- last name
+	- birthdate
+	- gender

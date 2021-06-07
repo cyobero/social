@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{% if user_profile %}
+		{{user_profile.username}}'s profile
+	{% endif %}
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<!-- User Profile -->
+			<div class="row">
+				<h3>user profile</h3>
+				<div class="container">
+					{% if user_profile.profile_pic %}
+					<img src="{{user_profile.get_absolute_url}}" />
+					{% endif %}
+				</div>
+			</div>
+
+			<!-- Contact information -->
+			<div class="row">
+
+			</div>
+		</div>
+		<div class="col-md-7">
+
+			<!-- Blurbs -->
+		</div>
+	</div>
+</div>
+{% endblock %}

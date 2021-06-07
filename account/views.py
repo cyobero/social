@@ -1,9 +1,11 @@
-from django.shortcuts import render
-from .forms import UserLoginForm, UserProfileCreationForm
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+
+from .forms import UserLoginForm, UserProfileCreationForm
+from .models import UserProfile
 # Create your views here.
 def user_login(request):
     if request.method == "POST":
@@ -49,3 +51,8 @@ def user_register(request):
     else:
         form = UserProfileCreationForm()
     return render(request, 'account/register.html', {'form': form})
+
+@login_required
+def user_profile(request, username):
+    user_profile = get_object_or_404(UserProfile, username=username)
+    return render(request, 'account/profile.html', {'user_profile': user_profile})
