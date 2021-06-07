@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-
 from .forms import UserLoginForm, UserProfileCreationForm
 from .models import UserProfile
 # Create your views here.

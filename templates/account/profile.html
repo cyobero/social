@@ -1,31 +1,82 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	{% if user_profile %}
-		{{user_profile.username}}'s profile
-	{% endif %}
+{% if user_profile %}
+{{user_profile.username}}'s profile
+{% endif %}
 {% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+
+	<div class="collapse navbar-collapse" id="navbarNav">
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<a class="nav-link active" aria-current="page" href="#">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Features</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Pricing</a>
+			</li>
+		</ul>
+	</div>
+
+	<ul class="navbar-nav mr-auto">
+		{% if request.user.is_authenticated %}
+		<a class="nav-link" href="{% url 'user_logout' %}">Log out</a>
+		</li>
+	</ul>
+	{% endif %}
+
+	</div>
+</nav>
+{% endblock %}
+
 {% block content %}
 <div class="container">
 	<div class="row">
-		<div class="col-md-4">
+
+		<!-- Left side of profile page -->
+		<div class="col-md-8">
 			<!-- User Profile -->
-			<div class="row">
-				<h3>user profile</h3>
-				<div class="container">
-					{% if user_profile.profile_pic %}
-					<img src="{{user_profile.get_absolute_url}}" />
-					{% endif %}
+			<div class="container">
+				<div class="row">
+					<!-- Profile picture -->
+					<div class="col">
+						<h3>{{user_profile.username}}'s profile</h3>
+						{% if user_profile.profile_pic %}
+						<img src="{{user_profile.get_absolute_url}}"
+							 style=width:400px;height:280px />
+						{% endif %}
+					</div>
+					<!-- Information -->
+					<div class="col">
+						<br><br>
+						<p>First name: {{user_profile.first_name}}</p>
+						<p>Last name: {{user_profile.last_name}}</p>
+						<p>Gender: {{user_profile.gender}}</p>
+						<p>City: {{user_profile.city}}</p>
+						<p>State: {{user_profile.state}}</p>
+						<p>Country: {{user_profile.country}}</p>
+					</div>
 				</div>
 			</div>
 
+			<br/>
 			<!-- Contact information -->
-			<div class="row">
-
+			<div class="container">
+				<div class="row">
+					<h4>contact {{user_profile.username}}</h4>
+				</div>
 			</div>
-		</div>
-		<div class="col-md-7">
 
+		</div>
+
+		<!-- Right side of profile page -->
+		<div class="col-md-4">
+			<h3>{{user_profile.username}}'s blurbs</h3>
 			<!-- Blurbs -->
 		</div>
 	</div>
