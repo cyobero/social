@@ -95,7 +95,7 @@
 				<!-- Write new blurb -->
 				{% if request.user.is_authenticated and user_profile.username == request.user.username %}
 				<a href="{% url 'create_blurb' username=request.user.username %}">
-				<button type="submit" class="btn btn-primary">New blurb</button>
+					<button type="submit" class="btn btn-primary">New blurb</button>
 				</a>
 				{% endif %}
 			</div>
