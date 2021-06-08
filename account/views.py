@@ -80,4 +80,6 @@ def user_register(request):
 
 def user_profile(request, username):
     user_profile = get_object_or_404(UserProfile, username=username)
-    return render(request, 'account/profile.html', {'user_profile': user_profile})
+    blurbs = Blurb.objects.filter(author__username=username)
+    return render(request, 'account/profile.html', {'user_profile': user_profile,
+                                                    'blurbs': blurbs})

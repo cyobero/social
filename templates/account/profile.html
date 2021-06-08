@@ -27,9 +27,7 @@
 		<a class="nav-link" href="{% url 'user_logout' %}">Log out</a>
 		</li>
 	</ul>
-	{% endif %}                               │ 55                             <small>Date joined: {{user_profile.date_joined}}</small>
-   14     template_name = 'account/edit_profile.html'
-
+	{% endif %}
 	</div>
 </nav>
 {% endblock %}
@@ -38,8 +36,8 @@
 <div class="container" align="left">
 	<div class="row" style="margin-top:2em;">
 		<!-- Left side of profile page -->
-
 		<div class="col-md-5 col-lg-6">
+
 			<!-- User Profile -->
 			<div class="card" style="width: 100%;">
 				<div class="card-header">@{{user_profile.username}}</div>
@@ -54,14 +52,14 @@
 							<p>From: {{user_profile.city}}, {{user_profile.state}},
 							{{user_profile.country}}</p>
 							<small>Date joined: {{user_profile.date_joined}}</small>
+							{% if request.user.is_authenticated and user_profile.username == request.user.username %}
+							<a href="{% url 'update_profile' pk=request.user.pk %}">
+								<button type="submit" class="btn btn-primary">
+									Edit Profile
+								</button>
+							</a>
+							{% endif %}
 						</div>
-						{% if request.user.is_authenticated and user_profile.username == request.user.username %}
-						<a href="{% url 'update_profile' pk=request.user.pk %}">
-							<button type="submit" class="btn btn-primary">
-								Edit Profile
-							</button>
-						</a>
-						{% endif %}
 					</div>
 				</div>
 
