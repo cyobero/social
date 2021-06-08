@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 class Blurb(models.Model):
     title = models.CharField(max_length=255)
@@ -20,3 +21,8 @@ class Blurb(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Blurb, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        author = self.author.username
+        slug = self.slug
+        return '/blurb/{}/{}'.format(author, slug)

@@ -1,21 +1,21 @@
-from django.shortcuts import render, get_list_or_404, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
 
-from .forms import UserLoginForm, UserProfileCreationForm, UpdateProfileForm
+from .forms import UserLoginForm, UserProfileCreationForm
 from blurb.models import Blurb
 from .models import UserProfile
 # Create your views here.
 
 
-class ProfileUpdateView(UpdateView, UserPassesTestMixin):
+class ProfileUpdateView(UpdateView):
     template_name = 'account/edit_profile.html'
     model = UserProfile
-    fields = ['username', 'first_name', 'last_name', 'city', 'state', 'country']
+    fields = ['username', 'first_name', 'last_name', 'city', 'state', 'country',
+              'profile_pic']
 
     def get_success_url(self):
         username = self.request.user.username
@@ -26,7 +26,6 @@ class ProfileUpdateView(UpdateView, UserPassesTestMixin):
         if obj.pk != self.request.user.pk:
             raise PermissionDenied()
         return obj
-
 
 
 def user_login(request):
@@ -81,5 +80,4 @@ def user_register(request):
 def user_profile(request, username):
     user_profile = get_object_or_404(UserProfile, username=username)
     blurbs = Blurb.objects.filter(author__username=username)
-    return render(request, 'account/profile.html', {'user_profile': user_profile,
-                                                    'blurbs': blurbs})
+    return render(request, 'account/profile.html', {'user_profile': user_profile, 'blurbs': blurbs})

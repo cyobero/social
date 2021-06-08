@@ -91,6 +91,14 @@
 			<p>{{user_profile.first_name}} has not written a blurb yet.</p>
 			{% endif %}
 
+			<div class="container">
+				<!-- Write new blurb -->
+				{% if request.user.is_authenticated and user_profile.username == request.user.username %}
+				<a href="{% url 'create_blurb' username=request.user.username %}">
+				<button type="submit" class="btn btn-primary">New blurb</button>
+				</a>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 	{% endblock %}

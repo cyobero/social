@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<meta http-equiv="refresh" content="1; URL={% url 'dashboard' %}" />
+<meta http-equiv="refresh" content="1; URL={% url 'user_profile' username=request.user.username %}" />
 <h3>Successfully logged in</h3>
 {% endblock %}
