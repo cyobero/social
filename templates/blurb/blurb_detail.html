@@ -33,6 +33,20 @@
 			<h4>{{blurb.title}}</p>
 				<p>{{blurb.body}}</p>
 		</div>
+		<!-- comments -->
+		{% if comments %}
+		  {% for comment in comments %}
+		  <p>"{{comment.body}}"
+		  by <small>{{comment.author}}</small>
+		  </p>
+		  {% endfor %}
+		{% endif %}
+		<!-- comment form -->
+		<form method="post">
+			{% csrf_token %}
+			{{form.as_p}}
+			<input type="submit" value="comment">
+		</form>
 
 	</div>
 </div>
