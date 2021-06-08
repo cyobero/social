@@ -23,3 +23,14 @@ class UserProfileCreationForm(UserCreationForm):
         model = UserProfile
         fields = ('username', 'email', 'first_name', 'last_name',
                   'password1', 'password2', 'gender', 'profile_pic',)
+
+
+class UpdateProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UpdateProfileForm, self).__init__(*args, **kwargs)
+        for fieldname in self.fields:
+            self.fields[fieldname].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = UserProfile
+        fields = ('username', 'first_name', 'last_name', 'gender', 'profile_pic',)

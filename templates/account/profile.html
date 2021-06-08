@@ -27,7 +27,8 @@
 		<a class="nav-link" href="{% url 'user_logout' %}">Log out</a>
 		</li>
 	</ul>
-	{% endif %}
+	{% endif %}                               │ 55                             <small>Date joined: {{user_profile.date_joined}}</small>
+   14     template_name = 'account/edit_profile.html'
 
 	</div>
 </nav>
@@ -54,6 +55,13 @@
 							{{user_profile.country}}</p>
 							<small>Date joined: {{user_profile.date_joined}}</small>
 						</div>
+						{% if request.user.is_authenticated and user_profile.username == request.user.username %}
+						<a href="{% url 'update_profile' pk=request.user.pk %}">
+							<button type="submit" class="btn btn-primary">
+								Edit Profile
+							</button>
+						</a>
+						{% endif %}
 					</div>
 				</div>
 
@@ -67,7 +75,9 @@
 			<!-- Blurbs -->
 			<div class="container">
 				<div class="row">
+
 					<h2>{{user_profile.username}}'s blurbs</h2>
+					{% if blurbs %}
 					<h4>{{blurbs.0.title}}</h4>
 					<small>posted on {{blurbs.0.edited}}</small>
 					<p>{{blurbs.0.body}}</p>
@@ -75,10 +85,14 @@
 				<div cass="row">
 					<h4>More recent blurbs...</h4>
 					<p class="lead">
-					<a href="#">
+					<a href="{% url 'blurb_detail' username=blurbs.1.author.username slug=blurbs.1.slug %}">
 						{{blurbs.1.title}}</a></p>
 				</div>
 			</div>
+			{% else %}
+			<p>{{user_profile.first_name}} has not written a blurb yet.</p>
+			{% endif %}
+
 		</div>
 	</div>
 	{% endblock %}

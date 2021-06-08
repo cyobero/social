@@ -1,12 +1,32 @@
-from django.shortcuts import render, get_list_or_404, get_object_or_404
+from django.shortcuts import render, get_list_or_404, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib import messages
+from django.views.generic.edit import UpdateView
+from django.core.exceptions import PermissionDenied
 
-from .forms import UserLoginForm, UserProfileCreationForm
+from .forms import UserLoginForm, UserProfileCreationForm, UpdateProfileForm
 from blurb.models import Blurb
 from .models import UserProfile
 # Create your views here.
+
+
+class ProfileUpdateView(UpdateView, UserPassesTestMixin):
+    template_name = 'account/edit_profile.html'
+    model = UserProfile
+    fields = ['username', 'first_name', 'last_name', 'city', 'state', 'country']
+
+    def get_success_url(self):
+        username = self.request.user.username
+        return '/account/profile/{}'.format(username)
+
+    def get_object(self, *args, **kwargs):
+        obj = super(ProfileUpdateView, self).get_object(*args, **kwargs)
+        if obj.pk != self.request.user.pk:
+            raise PermissionDenied()
+        return obj
+
 
 
 def user_login(request):
@@ -39,7 +59,7 @@ def user_logout(request):
 
 @login_required(login_url='user_login')
 def dashboard(request):
-    user = request.user
+    user = get_object_or_404(UserProfile, instance=request.user)
     return render(request, 'account/dashboard.html', {'user': user})
 
 
@@ -60,6 +80,4 @@ def user_register(request):
 
 def user_profile(request, username):
     user_profile = get_object_or_404(UserProfile, username=username)
-    blurbs = Blurb.objects.filter(author__username=username)
-    return render(request, 'account/profile.html', {'user_profile': user_profile,
-                                                    'blurbs': blurbs})
+    return render(request, 'account/profile.html', {'user_profile': user_profile})
