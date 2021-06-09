@@ -78,14 +78,27 @@
 					{% if blurbs %}
 					<h4>{{blurbs.0.title}}</h4>
 					<small>posted on {{blurbs.0.edited}}</small>
-					<p>{{blurbs.0.body}}</p>
+					<p>{{blurbs.0.body|truncatechars:100}}
+					{% if blurbs.0.body|length > 100 %}
+					<a href="{% url 'blurb_detail' username=blurbs.0.author.username slug=blurbs.0.slug %}">Read more...</a>
+					{% endif %}
+					</p>
+
+					<!-- comments -->
+					<div class="container">
+						<span>
+							{{blurbs.0.comments.count}} comments
+						</span>
+					</div>
 				</div>
+				{% if blurbs|length > 3 %}
 				<div cass="row">
 					<h4>More recent blurbs...</h4>
 					<p class="lead">
 					<a href="{% url 'blurb_detail' username=blurbs.1.author.username slug=blurbs.1.slug %}">
 						{{blurbs.1.title}}</a></p>
 				</div>
+				{% endif %}
 			</div>
 			{% else %}
 			<p>{{user_profile.first_name}} has not written a blurb yet.</p>
