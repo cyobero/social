@@ -10,7 +10,8 @@ class UserProfile(User):
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
-        ('O', 'Other')
+        ('O', 'Other'),
+        ('C', 'Cheeseburger'),
     )
     profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
@@ -18,7 +19,6 @@ class UserProfile(User):
     city = models.CharField(max_length=255, blank=True, null=True)
     state = USStateField(blank=True, null=True)
     postal_code = USZipCodeField(blank=True, null=True)
-    friends = models.ManyToManyField(User, blank=True, related_name='friends')
 
     def get_absolute_url(self):
         return self.profile_pic.url

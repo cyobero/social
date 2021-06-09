@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'django_countries',
     'blurb.apps.BlurbConfig',
-    'comment.apps.CommentConfig'
+    'comment.apps.CommentConfig',
+    'friends.apps.FriendsConfig',
+    'friendship',
 ]
 
 MIDDLEWARE = [

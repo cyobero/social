@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
     path('blurb/', include('blurb.urls')),
+    path('friends/', include('friends.urls')),
     path('', views.index, name='home'),
 ]
 

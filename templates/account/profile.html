@@ -59,6 +59,24 @@
 								</button>
 							</a>
 							{% endif %}
+							{% if request.user.username != to_username %}
+								<form method="post">
+									{% csrf_token %}
+									<input type="hidden" name="to_username" value="{{username}}"/>
+									<input type="submit" value="add {{username}} as a friend" />
+								</form>
+								{% if messages %}
+									{% for message in messages %}
+									{{message}}
+									{% endfor %}
+								{% endif %}
+							</a>
+							{% endif %}
+							{% if errors %}
+								{% for error in errors %}
+								<p>{{error}}</p>
+								{% endfor %}
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -78,20 +96,8 @@
 					{% if blurbs %}
 					<h4>{{blurbs.0.title}}</h4>
 					<small>posted on {{blurbs.0.edited}}</small>
-					<p>{{blurbs.0.body|truncatechars:100}}
-					{% if blurbs.0.body|length > 100 %}
-					<a href="{% url 'blurb_detail' username=blurbs.0.author.username slug=blurbs.0.slug %}">Read more...</a>
-					{% endif %}
-					</p>
-
-					<!-- comments -->
-					<div class="container">
-						<span>
-							{{blurbs.0.comments.count}} comments
-						</span>
-					</div>
+					<p>{{blurbs.0.body}}</p>
 				</div>
-				{% if blurbs|length > 3 %}
 				<div cass="row">
 					{% if blurbs|length > 3 %}
 					<h4>More recent blurbs...</h4>
@@ -109,7 +115,7 @@
 				<!-- Write new blurb -->
 				{% if request.user.is_authenticated and user_profile.username == request.user.username %}
 				<a href="{% url 'create_blurb' username=request.user.username %}">
-					<button type="submit" class="btn btn-primary">New blurb</button>
+				<button type="submit" class="btn btn-primary">New blurb</button>
 				</a>
 				{% endif %}
 			</div>

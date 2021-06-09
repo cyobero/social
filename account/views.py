@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
@@ -8,6 +9,8 @@ from django.core.exceptions import PermissionDenied
 from .forms import UserLoginForm, UserProfileCreationForm
 from blurb.models import Blurb
 from .models import UserProfile
+from friendship.models import Friend
+from friendship.exceptions import AlreadyExistsError
 # Create your views here.
 
 
@@ -78,6 +81,15 @@ def user_register(request):
 
 
 def user_profile(request, username):
-    user_profile = get_object_or_404(UserProfile, username=username)
-    blurbs = Blurb.objects.filter(author__username=username)
-    return render(request, 'account/profile.html', {'user_profile': user_profile, 'blurbs': blurbs})
+    context = {'to_username': username}
+    context['user_profile'] = get_object_or_404(UserProfile, username=username)
+    if request.method == 'POST':
+        from_user = request.user
+        to_user = get_object_or_404(User, username=username)
+        try:
+            Friend.objects.add_friend(from_user, to_user)
+            messages.success(request, "Sent %s a friend request." % username)
+        except AlreadyExistsError as e:
+            context['errors'] = ['%s' % e]
+    context['blurbs'] = Blurb.objects.filter(author__username=username)
+    return render(request, 'account/profile.html', context)
