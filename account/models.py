@@ -18,6 +18,7 @@ class UserProfile(User):
     city = models.CharField(max_length=255, blank=True, null=True)
     state = USStateField(blank=True, null=True)
     postal_code = USZipCodeField(blank=True, null=True)
+    friends = models.ManyToManyField(User, blank=True, related_name='friends')
 
     def get_absolute_url(self):
         return self.profile_pic.url

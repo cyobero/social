@@ -81,11 +81,13 @@
 					<p>{{blurbs.0.body}}</p>
 				</div>
 				<div cass="row">
+					{% if blurbs|length > 3 %}
 					<h4>More recent blurbs...</h4>
 					<p class="lead">
 					<a href="{% url 'blurb_detail' username=blurbs.1.author.username slug=blurbs.1.slug %}">
 						{{blurbs.1.title}}</a></p>
 				</div>
+				{% endif %}
 			</div>
 			{% else %}
 			<p>{{user_profile.first_name}} has not written a blurb yet.</p>
