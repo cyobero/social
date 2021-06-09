@@ -6,6 +6,8 @@ from django_countries.fields import CountryField
 from localflavor.us.models import USStateField, USZipCodeField
 from blurb.models import Blurb
 # Create your models here.
+
+
 class UserProfile(User):
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -13,7 +15,8 @@ class UserProfile(User):
         ('O', 'Other'),
         ('C', 'Cheeseburger'),
     )
-    profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profile_pic = models.ImageField(upload_to='profile_pics/',
+                                    default='default_profile.png', blank=True, null=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
     country = CountryField(blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)

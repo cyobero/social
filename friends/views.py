@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from friendship.models import Friend
 
 
-@login_required
+@login_required(login_url='login_url')
 def friend_requests(request):
     friend_requests = Friend.objects.requests(request.user)
     return render(request, 'friends/requests.html', {'friend_requests': friend_requests})
