@@ -19,6 +19,10 @@
 			<li class="nav-item">
 				<a class="nav-link active" aria-current="page" href="#">Home</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="{% url 'friend_requests' %}">Friend requests</a>
+			</li>
+
 		</ul>
 	</div>
 
@@ -36,14 +40,15 @@
 <div class="container" align="left">
 	<div class="row" style="margin-top:2em;">
 		<!-- Left side of profile page -->
-		<div class="col-md-5 col-lg-6">
+		<div class="col-md-6 col-lg-6">
 
 			<!-- User Profile -->
 			<div class="card" style="width: 100%;">
 				<div class="card-header">@{{user_profile.username}}</div>
 				<div class="row no-gutters">
 					<div class="col-sm-5">
-						<img class="card-img" src="{{user_profile.get_absolute_url}}" alt="Suresh Dasari Card">
+						<img class="card-img" src="{{user_profile.get_absolute_url}}"
+											  alt="Profile pic">
 					</div>
 					<div class="col-sm-7">
 						<div class="card-body">
@@ -60,22 +65,22 @@
 							</a>
 							{% endif %}
 							{% if request.user.username != to_username %}
-								<form method="post">
-									{% csrf_token %}
-									<input type="hidden" name="to_username" value="{{username}}"/>
-									<input type="submit" value="add {{username}} as a friend" />
-								</form>
-								{% if messages %}
-									{% for message in messages %}
-									{{message}}
-									{% endfor %}
-								{% endif %}
+							<form method="post">
+								{% csrf_token %}
+								<input type="hidden" name="to_username" value="{{username}}"/>
+								<input type="submit" value="add {{username}} as a friend" />
+							</form>
+							{% if messages %}
+							{% for message in messages %}
+							{{message}}
+							{% endfor %}
+							{% endif %}
 							</a>
 							{% endif %}
 							{% if errors %}
-								{% for error in errors %}
-								<p>{{error}}</p>
-								{% endfor %}
+							{% for error in errors %}
+							<p>{{error}}</p>
+							{% endfor %}
 							{% endif %}
 						</div>
 					</div>
@@ -86,7 +91,7 @@
 		</div> <!-- .col-md-5 .col-lg-6 -->
 
 		<!-- Right side of profile page -->
-		<div class="col-md-6">
+		<div class="col-md-5 col-lg-6">
 
 			<!-- Blurbs -->
 			<div class="container">
@@ -115,7 +120,7 @@
 				<!-- Write new blurb -->
 				{% if request.user.is_authenticated and user_profile.username == request.user.username %}
 				<a href="{% url 'create_blurb' username=request.user.username %}">
-				<button type="submit" class="btn btn-primary">New blurb</button>
+					<button type="submit" class="btn btn-primary">New blurb</button>
 				</a>
 				{% endif %}
 			</div>

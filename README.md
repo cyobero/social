@@ -11,8 +11,13 @@ A social media site a la MySpace.
 - ~~Users can create and edit their profile page so they can share information and content with others. (3.5/5)~~
 - ~~Users can write blurbs (texts that are larger than tweets but smaller than blogs) so
 	they can share their thoughts, opinions, and feelings.~~
+- Users can add a "top 8" friends to their profile page.
+
+
 - Style navbar (2.5)
 - Style comment form. (2.5)
+- Style profile card.
+- Only show the `k` latest blurbs for each profile.
 
 
 # Models

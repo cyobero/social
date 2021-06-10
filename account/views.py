@@ -10,7 +10,7 @@ from .forms import UserLoginForm, UserProfileCreationForm
 from blurb.models import Blurb
 from .models import UserProfile
 from friendship.models import Friend
-from friendship.exceptions import AlreadyExistsError
+from friendship.exceptions import AlreadyFriendsError
 # Create your views here.
 
 
@@ -89,7 +89,7 @@ def user_profile(request, username):
         try:
             Friend.objects.add_friend(from_user, to_user)
             messages.success(request, "Sent %s a friend request." % username)
-        except AlreadyExistsError as e:
+        except AlreadyFriendsError as e:
             context['errors'] = ['%s' % e]
     context['blurbs'] = Blurb.objects.filter(author__username=username)
     return render(request, 'account/profile.html', context)
