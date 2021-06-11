@@ -9,8 +9,8 @@ from django.core.exceptions import PermissionDenied
 from .forms import UserLoginForm, UserProfileCreationForm
 from blurb.models import Blurb
 from .models import UserProfile
-from friendship.models import Friend
-from friendship.exceptions import AlreadyFriendsError
+from friendship.models import Friend, FriendshipRequest
+from friendship.exceptions import AlreadyFriendsError, AlreadyExistsError
 # Create your views here.
 
 
@@ -81,15 +81,22 @@ def user_register(request):
 
 
 def user_profile(request, username):
-    context = {'to_username': username}
-    context['user_profile'] = get_object_or_404(UserProfile, username=username)
+    context = {
+        'user_profile': get_object_or_404(UserProfile, username=username),
+        'blurbs': Blurb.objects.filter(author__username=username),
+        'f_requests': FriendshipRequest.objects.filter(to_user=request.user),
+        'friends': Friend.objects.friends(request.user)
+    }
+    # Add friend
     if request.method == 'POST':
-        from_user = request.user
         to_user = get_object_or_404(User, username=username)
+        from_user = request.user
         try:
             Friend.objects.add_friend(from_user, to_user)
-            messages.success(request, "Sent %s a friend request." % username)
-        except AlreadyFriendsError as e:
-            context['errors'] = ['%s' % e]
-    context['blurbs'] = Blurb.objects.filter(author__username=username)
+            messages.success(request, "Sent {} a friend request".format(to_user.username))
+        except AlreadyFriendsError:
+            messages.error(request, 'You are already friends with {}'.format(username))
+        except AlreadyExistsError:
+            messages.error(request, 'A friend request has already been sent and is pending.')
+
     return render(request, 'account/profile.html', context)

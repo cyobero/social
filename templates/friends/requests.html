@@ -32,34 +32,40 @@
 
 {% block content %}
 <div class="container">
-	<div class="col-md-4"></div>
-	<div class="col-md-4">
-		<h4>My friend requests</h4>
-		{% if not friend_requests %}
-		<h4>You have no new friend requests. Loser.</h4>
-		{% else %}
-		{% for f_request in friend_requests %}
-		<p>{{f_request.from_user.username}}</p>
-		<div class="container">
-			<form method='post' action={% url 'friend_accept' %}>
-				{% csrf_token %}
-				<input type='hidden' name='f_request_id' value="{{f_request.id}}">
-				<input type='submit' value='Yessirr.'>
-			</form>
-			{% if messages %}
-				{% for message in messages %}
-					<p>{{message}}</p>
-				{% endfor %}
-			{% endif %}
-			<form method='post' action={% url 'friend_reject' %}>
-				{% csrf_token %}
-				<input type='hidden' name='f_request_id' value="{{f_request.id}}">
-				<input type='submit' value="Hell nah. I'm gucci, fam.">
-			</form>
+	<div class="row">
+		<div class="col-md-6"></div>
+		<div class="col-md-5">
+			<h4>My friend requests</h4>
+			{% if not friend_requests %}
+			<h4>You have no new friend requests. Loser.</h4>
+			{% else %}
 
+			{% for f_request in friend_requests %}
+			<p>{{f_request.from_user.username}}</p>
+
+			<div class="container">
+				<form method='post' action={% url 'friend_accept' %}>
+					{% csrf_token %}
+					<input type='hidden' name='f_request_id' value="{{f_request.id}}">
+					<input type='submit' value='Yessirr.'>
+				</form>
+				<!-- Reject friend request -->
+				<form method='post' action={% url 'friend_reject' %}>
+					{% csrf_token %}
+					<input type='hidden' name='f_request_id' value="{{f_request.id}}">
+					<input type='submit' value="Hell nah. I'm gucci, fam.">
+				</form>
+				{% if messages %}
+				{% for message in messages %}
+				<p>{{message}}</p>
+				{% endfor %}
+				{% endif %}
+
+
+			</div>
+			{% endfor %}
+			{% endif %}
 		</div>
-		{% endfor %}
-		{% endif %}
 	</div>
-	<div class="col-md-4"></div>
-	{% endblock %}
+</div>
+{% endblock %}

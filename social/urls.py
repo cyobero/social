@@ -25,7 +25,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('blurb/', include('blurb.urls')),
     path('friends/', include('friends.urls')),
-    path('', views.index, name='home'),
+    path('', views.home, name='home'),
 ]
 
 if settings.DEBUG:
