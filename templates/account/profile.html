@@ -35,11 +35,12 @@
 </nav>
 {% endblock %}
 
+<!-- Content -->
 {% block content %}
 <div class="container" align="left">
 	<div class="row" style="margin-top:2em;">
 		<!-- Left side of profile page -->
-		<div class="col-md-6 col-lg-6">
+		<div class="col-sm-6 col-md-6 col-lg-6">
 
 			<!-- User Profile -->
 			<div class="card" style="width: 100%;">
@@ -86,55 +87,53 @@
 
 
 			</div>
-		</div> <!-- .col-md-5 .col-lg-6 -->
+		</div> <!-- .col-sm-6 .col-md-6 .col-lg-6 -->
+
 
 		<!-- Right side of profile page -->
-		<div class="col-md-5 col-lg-6">
+		<div class="col-sm-6 col-md-6 col-lg-6">
 
-			<div class="container">
-				<div class="row">
-
-					<!-- Blurbs -->
-					<h2>{{user_profile.username}}'s blurbs</h2>
-					{% if blurbs %}
-					<h4>{{blurbs.0.title}}</h4>
-					<small>posted on {{blurbs.0.edited}}</small>
-					<p>{{blurbs.0.body}}</p>
-				</div>
-				<div cass="row">
-					{% if blurbs|length > 3 %}
-					<h4>More recent blurbs...</h4>
-					<p class="lead">
-					<a href="{% url 'blurb_detail' username=blurbs.1.author.username slug=blurbs.1.slug %}">
-						{{blurbs.1.title}}</a></p>
-				</div>
-				{% endif %}
+			<!-- Blurbs -->
+			<div class="row">
+				<h2>{{user_profile.username}}'s blurbs</h2>
+				{% if blurbs %}
+				<h4>{{blurbs.0.title}}</h4>
+				<small>posted on {{blurbs.0.edited}}</small>
+				<p>{{blurbs.0.body}}</p>
 			</div>
+			<div cass="row">
+				{% if blurbs|length > 3 %}
+				<h4>More recent blurbs...</h4>
+				<p class="lead">
+				<a href="{% url 'blurb_detail' username=blurbs.1.author.username slug=blurbs.1.slug %}">
+					{{blurbs.1.title}}</a></p>
+			</div>
+			{% endif %}
 			{% else %}
 			<p>{{user_profile.first_name}} has not written a blurb yet.</p>
 			{% endif %}
 
-			<div class="container">
-				<!-- Write new blurb -->
-				{% if request.user.is_authenticated and user_profile.username == request.user.username %}
-				<a href="{% url 'create_blurb' username=request.user.username %}">
-					<button type="submit" class="btn btn-primary">New blurb</button>
+			<!-- Write new blurb -->
+			{% if request.user.is_authenticated and user_profile.username == request.user.username %}
+			<a href="{% url 'create_blurb' username=request.user.username %}">
+				<button type="submit" class="btn btn-primary">New blurb</button>
+			</a>
+			{% endif %}
+		</div>
+
+		<!-- Friends -->
+		<div class="row">
+			<h4>{{user_profile}} has {{friends|length}} friends</h4>
+			{% for friend in friends %}
+			<div class="col-sm-3">
+				<a href="{% url 'user_profile' username=friend.username %}">
+					<p>{{friend.username}}</p>
+					<img src="{{friend.get_absolute_url}}" class="img-thumbnail rounded float-right">
 				</a>
-				{% endif %}
-				<div class="container">
-					<h4>{{user_profile}} has {{friends|length}} friends </h4>
-					{% if friends %}
-					{% for friend in friends %}
-					<tr>
-						<td>{{friend}}</td>
-					</tr>
-					{% endfor %}
-					{% endif %}
-				</div>
-
-			</div> <!-- .row -->
-
-		</div> <!-- .container -->
+			</div>
+			{% endfor %}
+		</div>
 
 	</div>
-	{% endblock %}
+</div>
+{% endblock %}

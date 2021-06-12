@@ -87,6 +87,9 @@ def user_profile(request, username):
         'f_requests': FriendshipRequest.objects.filter(to_user=request.user),
         'friends': Friend.objects.friends(request.user)
     }
+    # Gets UserProfile object for each Friend object in `context['friends']`.
+    context['friends'] = [get_object_or_404(UserProfile, username=friend.username) for
+                          friend in context['friends']]
     # Add friend
     if request.method == 'POST':
         to_user = get_object_or_404(User, username=username)
@@ -97,6 +100,7 @@ def user_profile(request, username):
         except AlreadyFriendsError:
             messages.error(request, 'You are already friends with {}'.format(username))
         except AlreadyExistsError:
-            messages.error(request, 'A friend request has already been sent and is pending.')
+            messages.error(
+                request, 'A friend request has already been sent and is pending.')
 
     return render(request, 'account/profile.html', context)
