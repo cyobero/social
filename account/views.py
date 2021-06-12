@@ -85,11 +85,8 @@ def user_profile(request, username):
         'user_profile': get_object_or_404(UserProfile, username=username),
         'blurbs': Blurb.objects.filter(author__username=username),
         'f_requests': FriendshipRequest.objects.filter(to_user=request.user),
-        'friends': Friend.objects.friends(request.user)
     }
-    # Gets UserProfile object for each Friend object in `context['friends']`.
-    context['friends'] = [get_object_or_404(UserProfile, username=friend.username) for
-                          friend in context['friends']]
+    context['friends'] = context['user_profile'].get_friends_profiles()
     # Add friend
     if request.method == 'POST':
         to_user = get_object_or_404(User, username=username)
