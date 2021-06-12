@@ -3,3 +3,10 @@
 	width: 100%;
 }
 
+body {
+	font-family: Roboto Light;
+}
+
+.navbar {
+	background-color: #310BBA; 
+}

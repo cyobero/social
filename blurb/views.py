@@ -1,11 +1,13 @@
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import DetailView
+from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from .models import Blurb
 from .forms import CreateBlurbForm
 from comment.models import Comment
 from comment.forms import CommentForm
+from friendship.models import Friend
 
 # Create your views here.
 # class BlurbDetailView(DetailView):
@@ -16,6 +18,7 @@ from comment.forms import CommentForm
         # blurb = Blurb.objects.filter(author__username=self.kwargs['username'],
                                      # slug=self.kwargs['slug'])
         # return blurb
+
 
 
 def blurb_detail(request, username, slug):
@@ -34,6 +37,14 @@ def blurb_detail(request, username, slug):
     return render(request, 'blurb/blurb_detail.html', {'blurb': blurb,
                                             'form': form,
                                             'comments': comments})
+
+
+@login_required(login_url='user_login')
+def blurbs_feed(request):
+    user = request.user
+    friends = Friend.objects.friends(user)
+    blurbs = [Blurb.objects.filter(Blurb, author=friend) for friend in friends]
+    return render(request, 'blurb/blurbs_feed.html', {'blurbs': blurbs})
 
 
 class CreateBlurbView(CreateView):
