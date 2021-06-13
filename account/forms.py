@@ -4,6 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class UserLoginForm(forms.Form):
     username = forms.CharField(max_length=255,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -31,12 +34,11 @@ class UpdateProfileForm(forms.ModelForm):
         super(UpdateProfileForm, self).__init__(*args, **kwargs)
         for fieldname in self.fields:
             self.fields[fieldname].widget.attrs.update({'class': 'form-control'})
-        self.fields['birthday'].widget.attrs.update({
-            'class': 'form-control',
-            'id': 'datepicker',
-        })
 
     class Meta:
         model = UserProfile
         fields = ('username', 'first_name', 'last_name', 'birthday', 'gender',
                   'profile_pic', 'occupation', 'education', 'hobbies',)
+        widgets = {
+            'birthday': DateInput()
+        }
