@@ -31,10 +31,16 @@ New blurb
 
 {% block content %}
 <div class="container">
-	<form method="post">
-		{% csrf_token %}
-		{{form.as_p}}
-		<input type="submit" value="Create blurb">
-	</form>
+	<div class="row">
+		<form method="post">
+			<div class="col-md-3"></div>
+			<div class="col-md-8">
+			{% csrf_token %}
+			{{form.as_p}}
+			<input type="submit" value="Create blurb">
+			</div>
+		</form>
+
+	</div>
 </div>
 {% endblock %}

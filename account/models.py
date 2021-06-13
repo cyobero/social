@@ -7,6 +7,7 @@ from django_countries.fields import CountryField
 from localflavor.us.models import USStateField, USZipCodeField
 from blurb.models import Blurb
 from friendship.models import Friend
+from birthday.fields import BirthdayField
 # Create your models here.
 
 
@@ -20,10 +21,13 @@ class UserProfile(User):
     profile_pic = models.ImageField(upload_to='profile_pics/',
                                     default='default_profile.png', blank=True, null=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
+    birthday = BirthdayField(blank=True, null=True)
     country = CountryField(blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     state = USStateField(blank=True, null=True)
     postal_code = USZipCodeField(blank=True, null=True)
+    occupation = models.CharField(max_length=255, blank=True, null=True)
+    education = models.CharField(max_length=255, blank=True, null=True)
 
     def get_absolute_url(self):
         return self.profile_pic.url

@@ -3,22 +3,22 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.views.generic import UpdateView
 from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
 
-from .forms import UserLoginForm, UserProfileCreationForm
+from .forms import UserLoginForm, UserProfileCreationForm, UpdateProfileForm
 from blurb.models import Blurb
 from .models import UserProfile
 from friendship.models import Friend, FriendshipRequest
 from friendship.exceptions import AlreadyFriendsError, AlreadyExistsError
+
+
 # Create your views here.
-
-
 class ProfileUpdateView(UpdateView):
     template_name = 'account/edit_profile.html'
     model = UserProfile
-    fields = ['username', 'first_name', 'last_name', 'city', 'state', 'country',
-              'profile_pic']
+    form_class = UpdateProfileForm
 
     def get_success_url(self):
         username = self.request.user.username
