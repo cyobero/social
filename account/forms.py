@@ -26,12 +26,17 @@ class UserProfileCreationForm(UserCreationForm):
 
 
 class UpdateProfileForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(UpdateProfileForm, self).__init__(*args, **kwargs)
         for fieldname in self.fields:
             self.fields[fieldname].widget.attrs.update({'class': 'form-control'})
+        self.fields['birthday'].widget.attrs.update({
+            'class': 'form-control',
+            'id': 'datepicker',
+        })
 
     class Meta:
         model = UserProfile
-        fields = ('username', 'first_name', 'last_name', 'gender',
-                  'profile_pic', 'occupation', 'education',)
+        fields = ('username', 'first_name', 'last_name', 'birthday', 'gender',
+                  'profile_pic', 'occupation', 'education', 'hobbies',)

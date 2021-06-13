@@ -28,6 +28,7 @@ class UserProfile(User):
     postal_code = USZipCodeField(blank=True, null=True)
     occupation = models.CharField(max_length=255, blank=True, null=True)
     education = models.CharField(max_length=255, blank=True, null=True)
+    hobbies = models.TextField(blank=True, null=True)
 
     def get_absolute_url(self):
         return self.profile_pic.url

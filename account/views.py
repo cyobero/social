@@ -16,7 +16,7 @@ from friendship.exceptions import AlreadyFriendsError, AlreadyExistsError
 
 # Create your views here.
 class ProfileUpdateView(UpdateView):
-    template_name = 'account/edit_profile.html'
+    template_name = 'account/update_profile.html'
     model = UserProfile
     form_class = UpdateProfileForm
 
